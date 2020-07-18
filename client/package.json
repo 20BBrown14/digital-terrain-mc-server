@@ -21,7 +21,7 @@
     ]
   },
   "dependencies": {
-    "digital-terrain-mc-js": "git://github.com/20BBrown14/digital-terrain-mc-js.git#dev",
+    "digital-terrain-mc-js": "git://github.com/20BBrown14/digital-terrain-mc-js.git#feature/discord_oauth_test",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-on-rails": "11.3.0",
