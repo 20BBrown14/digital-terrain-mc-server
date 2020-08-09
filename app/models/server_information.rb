@@ -1,0 +1,2 @@
+class ServerInformation < ApplicationRecord
+end

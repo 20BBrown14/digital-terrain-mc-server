@@ -18,7 +18,6 @@
 !/storage/.keep
 .byebug_history
 
-/public
 /tests/jest/
 
 # Ignore master key for decrypting credentials and more.
@@ -43,7 +42,16 @@ node_modules/
 /client/.env.development.local
 /client/.env.test.local
 /client/.env.production.local
+/public/*
+!/public/.keep
+!/public/assets/
 
 /client/npm-debug.log*
 /client/yarn-debug.log*
 /client/yarn-error.log*
+
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackManifestPlugin = require('webpack-manifest-plugin')
-const webpackConfig = require('../../digital-terrain-mc-js/webpack.config');
 
 module.exports = {
   entry: path.resolve(__dirname, 'node_modules', 'digital-terrain-mc-js', 'lib', 'registration.js'),

@@ -20,13 +20,13 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: localhost
-  username: dtmc_dev
-  password: dtmc_dev_password
 
 development:
   <<: *default
   database: digital_terrain_mc_server_development
+  host: localhost
+  username: dtmc_dev
+  password: dtmc_dev_password
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -61,6 +61,9 @@ development:
 test:
   <<: *default
   database: digital_terrain_mc_server_test
+  host: localhost
+  username: dtmc_dev
+  password: dtmc_dev_password
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -83,6 +86,9 @@ test:
 #
 production:
   <<: *default
-  database: digital_terrain_mc_server_production
-  username: digital_terrain_mc_server
-  password: <%= ENV['DIGITAL_TERRAIN_MC_SERVER_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
+  database: <%= ENV['RDS_DATABASE'] %>
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOST'] %>
+  port: 5432
