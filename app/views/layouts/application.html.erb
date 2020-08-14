@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html id='root'>
   <head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+
     <title>
       Digital Terrain
     </title>
 
     <%= javascript_include_tag 'main' %>
-    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag 'main', media: 'all' %>
   </head>
 
-  <body style="margin:0">
+  <body>
     <div>
       <%= react_component('DigitalTerrainMc') %>
     </div>

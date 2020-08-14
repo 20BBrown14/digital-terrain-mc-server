@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack')
+const autoprefixer = require('autoprefixer')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackManifestPlugin = require('webpack-manifest-plugin')
 
@@ -12,7 +13,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name]-[chunkhash].css',
+      filename: '[name].css',
     }),
     new WebpackManifestPlugin({
       fileName: 'webpack-manifest.json',
@@ -40,7 +41,19 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: path.resolve(__dirname, '..', 'app', 'assets', 'stylesheets'),
+            },
+          },
+          'css-loader',
+        ],
+      },
+      {
+        test: /\.less$/,
+        use: ['css-loader', 'less-loader'],
       },
     ]
   }
