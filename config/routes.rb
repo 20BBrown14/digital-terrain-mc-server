@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   get '/aboutUsInformation', to: 'web#get_about_us_information'
   get '/veteransInformation', to: 'web#get_veterans_information'
   post '/save', to: 'web#save'
+  post '/applicationsubmit', to: 'web#submit_application'
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'json'
+
 # Web Controller
 class WebController < ApplicationController
 
@@ -52,5 +54,19 @@ class WebController < ApplicationController
       head 400
     end
     render :json => json_to_save
+  end
+
+  def submit_application
+    application = params[:applicationInformation]
+    Application.create(inGameName: params[:inGameName],
+                       discordUsername: params[:discordUsername],
+                       age: params[:age],
+                       location: params[:location],
+                       joinReason: params[:joinReason],
+                       playStyle: params[:playStyle],
+                       freeTime: params[:freeTime],
+                       source: params[:source]                    
+    )
+    head 204
   end
 end
