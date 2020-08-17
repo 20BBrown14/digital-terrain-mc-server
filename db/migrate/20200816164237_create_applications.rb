@@ -8,6 +8,7 @@ class CreateApplications < ActiveRecord::Migration[6.0]
       t.string :joinReason
       t.string :playStyle
       t.string :freeTime
+      t.string :status
       t.json :source
 
       t.timestamps

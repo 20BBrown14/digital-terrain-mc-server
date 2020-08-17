@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 2020_08_16_164237) do
     t.string "joinReason"
     t.string "playStyle"
     t.string "freeTime"
+    t.string "status"
     t.json "source"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

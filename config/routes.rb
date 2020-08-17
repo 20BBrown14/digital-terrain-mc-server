@@ -9,4 +9,7 @@ Rails.application.routes.draw do
   get '/veteransInformation', to: 'web#get_veterans_information'
   post '/save', to: 'web#save'
   post '/applicationsubmit', to: 'web#submit_application'
+  get '/loadApps', to: 'web#load_apps'
+  post '/updateappstatus', to: 'web#update_app_status'
+  post '/deleteapp', to: 'web#delete_app'
 end
