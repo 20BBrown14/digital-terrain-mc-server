@@ -42,12 +42,7 @@ module.exports = {
       {
         test: /\.css$/i,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: path.resolve(__dirname, '..', 'app', 'assets', 'stylesheets'),
-            },
-          },
+          'style-loader',
           'css-loader',
         ],
       },

@@ -58,15 +58,39 @@ class WebController < ApplicationController
 
   def submit_application
     application = params[:applicationInformation]
-    Application.create(inGameName: params[:inGameName],
-                       discordUsername: params[:discordUsername],
-                       age: params[:age],
-                       location: params[:location],
-                       joinReason: params[:joinReason],
-                       playStyle: params[:playStyle],
-                       freeTime: params[:freeTime],
-                       source: params[:source]                    
+    Application.create(inGameName: application[:inGameName],
+                       discordUsername: application[:discordUsername],
+                       age: application[:age],
+                       location: application[:location],
+                       joinReason: application[:joinReason],
+                       playStyle: application[:playStyle],
+                       freeTime: application[:freeTime],
+                       source: application[:source],
+                       status: 'submitted'               
     )
+    head 204
+  end
+
+  def load_apps
+    filter = params[:applicationFilter]
+    filteredApplications = Application.where('status = ?', filter)
+    filteredApplications = JSON.parse(filteredApplications.to_json).each { |app| app['appID'] = app.delete('id') }
+    render :json => filteredApplications
+  end
+
+  def update_app_status
+    appID = params[:appID]
+    newStatus = params[:newStatus]
+    app_to_update = Application.find(appID)
+    app_to_update.status = newStatus
+    app_to_update.save
+    head 204
+  end
+
+  def delete_app
+    appID = params[:appID]
+    app_to_delete = Application.find(appID)
+    app_to_delete.destroy
     head 204
   end
 end
