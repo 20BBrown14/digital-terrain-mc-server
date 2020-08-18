@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   get '/loadApps', to: 'web#load_apps'
   post '/updateappstatus', to: 'web#update_app_status'
   post '/deleteapp', to: 'web#delete_app'
+  get '/galleryImages', to: 'web#get_images'
 end

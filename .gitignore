@@ -45,6 +45,7 @@ node_modules/
 /public/*
 !/public/.keep
 !/public/assets/
+.env
 
 /client/npm-debug.log*
 /client/yarn-debug.log*

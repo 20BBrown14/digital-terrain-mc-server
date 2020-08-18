@@ -93,4 +93,25 @@ class WebController < ApplicationController
     app_to_delete.destroy
     head 204
   end
+
+  def get_images
+    is_featured = params[:isFeatured]
+    found_images = []
+    Image.find_each do |image|
+      found_images.push(image)
+    end
+
+    found_images.select! { |image| image.is_featured } if ActiveModel::Type::Boolean.new.cast(is_featured)
+    
+    signer = Aws::S3::Presigner.new
+
+    found_images.each do |image|
+      signed_url = signer.presigned_request(
+        :get_object, bucket: ENV['S3_BUCKET'], key: "#{image.title}.png"
+      )
+      image.address = signed_url[0]
+    end
+    puts(found_images)
+    render :json => found_images
+  end
 end
