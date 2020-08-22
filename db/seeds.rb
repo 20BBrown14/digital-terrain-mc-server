@@ -24,7 +24,7 @@ Veterans.create(veteransInformation: veterans_json)
 images = JSON.parse(File.read(Rails.root.join('lib', 'seeds', 'images.json')))
 images.each do |image_url|
   title = image_url[54..-5]
-  is_featured = title == 'Panda_Brah&DMDF_' || title == 'Community_Guardian_Farm' || title == 'Intimidatings_Nether_Base' || title == 'Spawn' || title == 'Nether_Portal'
-
-  Image.create(address: image_url, title: title, is_featured: is_featured)
+  isFeatured = title == 'Panda_Brah&DMDF_' || title == 'Community_Guardian_Farm' || title == 'Intimidatings_Nether_Base' || title == 'Spawn' || title == 'Nether_Portal'
+  key = image_url[54..]
+  Image.create(address: '', title: title, isFeatured: isFeatured, key: key)
 end

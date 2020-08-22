@@ -95,23 +95,60 @@ class WebController < ApplicationController
   end
 
   def get_images
-    is_featured = params[:isFeatured]
+    isFeatured = params[:isFeatured]
+
     found_images = []
     Image.find_each do |image|
       found_images.push(image)
     end
 
-    found_images.select! { |image| image.is_featured } if ActiveModel::Type::Boolean.new.cast(is_featured)
+    found_images.select! { |image| image.isFeatured } if ActiveModel::Type::Boolean.new.cast(isFeatured)
     
     signer = Aws::S3::Presigner.new
 
     found_images.each do |image|
       signed_url = signer.presigned_request(
-        :get_object, bucket: ENV['S3_BUCKET'], key: "#{image.title}.png"
+        :get_object, bucket: ENV['S3_BUCKET'], key: image.key
       )
       image.address = signed_url[0]
     end
-    puts(found_images)
     render :json => found_images
+  end
+
+  def delete_image
+    image_id = params[:imageID]
+    image_to_delete = Image.find(image_id)
+    s3 = Aws::S3::Resource.new
+    s3.bucket(ENV['S3_BUCKET']).object(image_to_delete.key).delete()
+    image_to_delete.destroy
+    head 204
+  end
+
+  def toggle_featured_image
+    image_id = params[:imageID]
+    image_to_delete = Image.find(image_id)
+    image_to_delete.isFeatured = !image_to_delete.isFeatured
+    image_to_delete.save
+    head 204
+  end
+
+  def upload_image
+    file = params[:file]
+    split_file_name = file.original_filename.split('.')
+    extension = split_file_name[split_file_name.length - 1]
+    image_title = file.original_filename[0..(-(extension.length + 2))]
+    s3 = Aws::S3::Resource.new
+    obj = s3.bucket(ENV['S3_BUCKET']).object(file.original_filename)
+    file.open()
+    obj.upload_file(file.path) do |response|
+      file.close()
+    end
+    Image.create(address: '',
+                 title: image_title,
+                 isFeatured: false,
+                 key: file.original_filename
+     
+    )
+    head 204
   end
 end
