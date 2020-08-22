@@ -3,7 +3,8 @@ class CreateImages < ActiveRecord::Migration[6.0]
     create_table :images do |t|
       t.string :address
       t.string :title
-      t.boolean :is_featured
+      t.string :key
+      t.boolean :isFeatured
 
       t.timestamps
     end

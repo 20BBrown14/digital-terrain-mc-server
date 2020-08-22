@@ -38,7 +38,8 @@ ActiveRecord::Schema.define(version: 2020_08_17_225021) do
   create_table "images", force: :cascade do |t|
     t.string "address"
     t.string "title"
-    t.boolean "is_featured"
+    t.string "key"
+    t.boolean "isFeatured"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
