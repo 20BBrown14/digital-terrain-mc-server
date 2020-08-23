@@ -165,7 +165,7 @@ class WebController < ApplicationController
     client_secret = URI.encode_www_form([['client_secret', ENV['DISCORD_CLIENT_SECRET']]])
     grant_type = URI.encode_www_form([['grant_type', 'authorization_code']])
     code = URI.encode_www_form([['code', params[:code]]])
-    redirect_uri = URI.encode_www_form([['redirect_uri', 'http://localhost:3000/loggedin']])
+    redirect_uri = URI.encode_www_form([['redirect_uri', "#{ENV['DISCORD_AUTH_CALLBACK_DOMAIN']}/loggedin"]])
     scope = URI.encode_www_form([['scope', 'identify guilds']])
     response = HTTParty.post("https://discord.com/api/v6/oauth2/token", {
       headers: {"Content-Type" => "application/x-www-form-urlencoded"},
