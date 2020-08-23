@@ -8,6 +8,7 @@ class WebController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def show
+    render 'authenticated'
   end
 
   def get_server_rules
@@ -31,6 +32,7 @@ class WebController < ApplicationController
   end
 
   def save
+    return head 401 unless authorize_admin_request
     json_type_to_save = params[:JSONTypeToSave]
     json_to_save = params[:JSON]
     case json_type_to_save
@@ -72,6 +74,7 @@ class WebController < ApplicationController
   end
 
   def load_apps
+    return head 401 unless authorize_admin_request
     filter = params[:applicationFilter]
     filteredApplications = Application.where('status = ?', filter)
     filteredApplications = JSON.parse(filteredApplications.to_json).each { |app| app['appID'] = app.delete('id') }
@@ -79,6 +82,7 @@ class WebController < ApplicationController
   end
 
   def update_app_status
+    return head 401 unless authorize_admin_request
     appID = params[:appID]
     newStatus = params[:newStatus]
     app_to_update = Application.find(appID)
@@ -88,6 +92,7 @@ class WebController < ApplicationController
   end
 
   def delete_app
+    return head 401 unless authorize_admin_request
     appID = params[:appID]
     app_to_delete = Application.find(appID)
     app_to_delete.destroy
@@ -116,6 +121,7 @@ class WebController < ApplicationController
   end
 
   def delete_image
+    return head 401 unless authorize_admin_request
     image_id = params[:imageID]
     image_to_delete = Image.find(image_id)
     s3 = Aws::S3::Resource.new
@@ -125,6 +131,7 @@ class WebController < ApplicationController
   end
 
   def toggle_featured_image
+    return head 401 unless authorize_admin_request
     image_id = params[:imageID]
     image_to_delete = Image.find(image_id)
     image_to_delete.isFeatured = !image_to_delete.isFeatured
@@ -133,6 +140,7 @@ class WebController < ApplicationController
   end
 
   def upload_image
+    return head 401 unless authorize_admin_request
     file = params[:file]
     split_file_name = file.original_filename.split('.')
     extension = split_file_name[split_file_name.length - 1]
@@ -150,5 +158,67 @@ class WebController < ApplicationController
      
     )
     head 204
+  end
+
+  def logged_in
+    client_id = URI.encode_www_form([['client_id', '693123471210709072']])
+    client_secret = URI.encode_www_form([['client_secret', ENV['DISCORD_CLIENT_SECRET']]])
+    grant_type = URI.encode_www_form([['grant_type', 'authorization_code']])
+    code = URI.encode_www_form([['code', params[:code]]])
+    redirect_uri = URI.encode_www_form([['redirect_uri', 'http://localhost:3000/loggedin']])
+    scope = URI.encode_www_form([['scope', 'identify guilds']])
+    response = HTTParty.post("https://discord.com/api/v6/oauth2/token", {
+      headers: {"Content-Type" => "application/x-www-form-urlencoded"},
+      body: "#{client_id}&#{client_secret}&#{grant_type}&#{code}&#{redirect_uri}&#{scope}"
+    })
+
+    user_guilds_response = HTTParty.get('https://discord.com/api/users/@me/guilds', {
+      headers: {"Content-Type" => "application/json", "Authorization" => "Bearer #{JSON.parse(response.body)["access_token"]}" }
+    })
+    user_guilds = JSON.parse(user_guilds_response.body)
+
+    user_id_response = HTTParty.get('https://discord.com/api/users/@me', {
+      headers: {"Content-Type" => "application/json", "Authorization" => "Bearer #{JSON.parse(response.body)["access_token"]}" }
+    })
+    user_id = JSON.parse(user_id_response.body)['id']
+
+    dt_member_response = HTTParty.get("https://discord.com/api/guilds/#{ENV['DT_GUILD_ID']}/members/#{user_id}", {
+      headers: {"Content-Type" => "application/json", "Authorization" => "Bot #{ENV['DISCORD_BOT_TOKEN']}" }
+    })
+    dt_member = JSON.parse(dt_member_response.body) if dt_member_response.body
+
+    if(dt_member.key?('code'))
+      # member does not exist
+      render 'authenticated'
+      return
+    end
+    @discord_nick = dt_member['nick'] || dt_member['user']['username']
+    if(dt_member['roles'].include?(ENV['DISCORD_WEB_ADMIN_ROLE']))
+      @is_admin = true
+    else
+      @is_admin = false
+    end
+    user = User.find_by(discord_id: user_id)
+    if !user
+      new_user = User.create(is_admin: @is_admin, discord_id: user_id)
+      new_user.save
+    end
+    @token = JsonWebToken.encode(user_id: user_id)
+    # @exp_time = Time.now + 24.hours.to_i
+    render 'authenticated'
+  end
+
+  def authorize_admin_request
+    header = request.headers['Authorization']
+    header = header.split(' ').last if header
+    begin
+      decoded = JsonWebToken.decode(header)
+      current_user = User.find_by(discord_id: decoded[:user_id])
+      return current_user.is_admin
+    rescue ActiveRecord::RecordNotFound => e
+      return false
+    rescue JWT::DecodeError => e
+      return false
+    end
   end
 end
