@@ -16,4 +16,5 @@ Rails.application.routes.draw do
   post '/deleteImage', to: 'web#delete_image'
   post '/toggleFeaturedImage', to: 'web#toggle_featured_image'
   post '/imageUpload', to: 'web#upload_image'
+  get 'loggedin', to: 'web#logged_in'
 end
