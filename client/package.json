@@ -1,6 +1,6 @@
 {
   "name": "digital_terrain_mc_server",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "build:production": "NODE_ENV=production webpack --config webpack.config.js -p",
@@ -22,7 +22,7 @@
     ]
   },
   "dependencies": {
-    "digital-terrain-mc-js": "git://github.com/20BBrown14/digital-terrain-mc-js.git#dev",
+    "digital-terrain-mc-js": "git://github.com/20BBrown14/digital-terrain-mc-js.git#master",
     "jsoneditor": "9.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

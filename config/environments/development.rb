@@ -52,4 +52,5 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.hosts << "fierce-anchorage-18274.herokuapp.com"
+  config.hosts << "www.digitalterrainmc.com"
 end
