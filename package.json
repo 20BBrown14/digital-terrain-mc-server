@@ -1,0 +1,17 @@
+{
+  "name": "digital_terrain_mc_server_parent",
+  "private": true,
+  "scripts": {
+    "build:production": "cd client && npm run build:production",
+    "clean:all": "rimraf ./client/node_modules && rimraf ./node_modules",
+    "clean:install": "npm run clean:all && npm install",
+    "postinstall": "cd client && npm install",
+    "rails-server": "npm run build:production && rails server -b 0.0.0.0",
+    "rails-server-production": "rails server -p $PORT -b 0.0.0.0"
+  },
+  "devDependencies": {
+    "postcss-loader": "^3.0.0",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {}
+}

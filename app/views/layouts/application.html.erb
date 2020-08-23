@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html id='root'>
+  <head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+
+    <title>
+      Digital Terrain
+    </title>
+
+    <%= javascript_include_tag 'main' %>
+    <%= favicon_link_tag 'bee.ico' %>
+  </head>
+
+  <body>
+    <div>
+      <%= react_component('DigitalTerrainMc', props: { isAdmin: @is_admin, discordNick: @discord_nick, jwtToken: @token, authCallbackDomain: ENV['DISCORD_AUTH_CALLBACK_DOMAIN'] }) %>
+    </div>
+  </body>
+</html>

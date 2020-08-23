@@ -1,0 +1,2 @@
+class Veterans < ApplicationRecord
+end

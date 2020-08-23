@@ -1,0 +1,43 @@
+{
+  "name": "digital_terrain_mc_server",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:production": "NODE_ENV=production webpack --config webpack.config.js -p",
+    "postinstall": "npm run build:production"
+  },
+  "entryPointDependencies": [
+    "digital-terrain-mc-js"
+  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "digital-terrain-mc-js": "git://github.com/20BBrown14/digital-terrain-mc-js.git#master",
+    "jsoneditor": "9.0.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-on-rails": "11.3.0",
+    "react-scripts": "3.4.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "postcss-loader": "^3.0.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-manifest-plugin": "^2.2.0"
+  }
+}
