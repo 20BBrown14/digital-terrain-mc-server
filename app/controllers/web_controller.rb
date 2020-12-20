@@ -202,6 +202,9 @@ class WebController < ApplicationController
     if !user
       new_user = User.create(is_admin: @is_admin, discord_id: user_id)
       new_user.save
+    else
+      user.is_admin = @is_admin
+      user.save
     end
     @token = JsonWebToken.encode(user_id: user_id)
     # @exp_time = Time.now + 24.hours.to_i
