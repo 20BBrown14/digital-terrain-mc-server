@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "digital-terrain-mc-js": "git://github.com/20BBrown14/digital-terrain-mc-js.git#master",
-    "jsoneditor": "9.0.3",
+    "jsoneditor": "9.5.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-on-rails": "11.3.0",
