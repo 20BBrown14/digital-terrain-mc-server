@@ -10,7 +10,7 @@
     "rails-server-production": "rails server -p $PORT -b 0.0.0.0"
   },
   "devDependencies": {
-    "postcss-loader": "^3.0.0",
+    "postcss-loader": "^7.0.2",
     "rimraf": "^3.0.2"
   },
   "dependencies": {}
